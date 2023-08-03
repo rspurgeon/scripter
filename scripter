@@ -1,0 +1,45 @@
+#!/bin/zsh
+
+# Default commands file
+commands_file="commands.txt"
+
+# Parse options
+while getopts f: option
+do
+case "${option}"
+in
+f) commands_file=${OPTARG};;
+esac
+done
+
+# Shift to remove the options from $@
+shift $((OPTIND-1))
+
+# Check if a command key was passed
+if [ $# -eq 0 ]; then
+  echo "No command key supplied. Please supply a valid command key."
+  exit 1
+fi
+
+# Get the command key
+command_key=$1
+
+# Check if the commands file exists
+if [ ! -f "$commands_file" ]; then
+  echo "Commands file does not exist."
+  exit 1
+fi
+
+# Search for the command key in the file
+cmd=$(grep "^$command_key:" "$commands_file" | cut -d':' -f2)
+
+# Check if a command was found
+if [ -z "$cmd" ]; then
+  echo "Invalid command key. Please supply a valid command key."
+  exit 1
+fi
+
+echo "loaded command : $command_key"
+
+# Copy the command to the clipboard
+echo -n "$cmd" | pbcopy
