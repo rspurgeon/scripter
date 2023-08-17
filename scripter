@@ -31,7 +31,7 @@ if [ ! -f "$commands_file" ]; then
 fi
 
 # Search for the command key in the file
-cmd=$(grep "^$command_key:" "$commands_file" | cut -d':' -f2)
+cmd=$(grep "^$command_key:" "$commands_file" | cut -d':' -f2-)
 
 # Check if a command was found
 if [ -z "$cmd" ]; then
